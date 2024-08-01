@@ -1,0 +1,13 @@
+{% extends "parent/base.html" %}
+{% block title %}posts
+{% endblock %}
+{% block content %}
+    <h1>post list</h1>
+	{% for post in posts %}
+        <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+        <img src="{{ post.images.first.image_file.url }}" alt="{{ post.images.first.title }}">
+{#        <h2><a href="{% url 'blog:post-detail' post.id %}">{{ post.title }}</a></h2>#}
+        <p>{{ post.description | truncatewords:7 }}</p>
+    {% endfor %}
+    {% include "partials/pageinator.html" with page=page_obj%}
+{% endblock %}

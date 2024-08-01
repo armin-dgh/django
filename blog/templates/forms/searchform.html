@@ -1,0 +1,16 @@
+ {% extends "parent/base.html" %}
+{% block title %}search post
+{% endblock %}
+{% block content %}
+     {% if query %}
+         <p>{{ results.count }} of result by searching ({{ query }})</p>
+         <br>
+        {% for post in results %}
+            <a href="{{ post.get_absolute_url }}">{{ post }}</a>
+            <p>{{ post.description }}</p>
+                {% empty %}
+            Not found ....^-^
+        {% endfor %}
+
+    {% endif %}
+ {% endblock %}

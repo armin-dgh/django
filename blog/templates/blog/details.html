@@ -1,0 +1,34 @@
+{% extends "parent/base.html" %}
+{% load jformat %}
+{% load blog_tags %}
+{% block title %}posts
+{% endblock %}
+{% block content %}
+    <h1>post detail</h1>
+        <h2> {{ post.title }}(by {{ post.author }})</h2>
+    {% for img in post.images.all %}
+        <img src="{{ img.image_file.url }}" alt="{{ img.title }}">
+    {% endfor %}
+        <p>{{ post.description |markdown  }}</p>
+    <hr>
+    <p>{{ post.publish|jformat:"%A %d %B %Y- %H:%M" }}</p>
+    <br><br>
+    <hr>
+    <div>
+    {% with comments.count as com_count %}
+    {{ com_count }} comment{{ com_count|pluralize }}
+    {% endwith %}
+    </div>
+
+    <div>
+    {% for cm in comments %}
+        {{ cm.massage|linebreaks }}
+        <br>
+        {{ cm.name }}
+        {% empty %}
+        کامنتی وجود ندارد!
+    {% endfor %}
+    </div>
+    {% include 'forms/comment.html' %}
+
+{% endblock %}

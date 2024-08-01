@@ -1,0 +1,22 @@
+ {% block title %}comment post
+{% endblock %}
+{% block content %}
+    <h1>comment</h1>
+    {% if comment %}
+        کامنت شما ثبت شده.
+        <a href="{{ post.get_absolute_url }}">بازگشت به پست</a>
+    {% else %}
+    <form method="post" action="{% url 'blog:post-comment' post.id %}">
+        {% csrf_token %}
+{#    model 1 #}
+{#        {% for field in form %}#}
+{#            {{ field.name }}#}
+{#            {{ field }}#}
+{#            {{ field.error }}#}
+{#        {% endfor %}#}
+{#    model  2  (as_p, as_ul, as_ol) #}
+        {{ form.as_p }}
+        <input value="ثبت کامنت" type="submit">
+    </form>
+    {% endif %}
+ {% endblock %}
