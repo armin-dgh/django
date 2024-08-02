@@ -88,19 +88,6 @@ def post_comment(request, id):
         }
     return render(request, "forms/comment.html", context)
 
-def create_posts(request):
-    if request.method == "POST":
-        form = CreatPostForm(request.POST, request.FILES)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            Image.objects.create(image_file=form.cleaned_data['image1'], post=post)
-            Image.objects.create(image_file=form.cleaned_data['image2'], post=post)
-            return redirect("blog:post-list")
-    else:
-        form = CreatPostForm()
-    return render(request, "forms/createpost.html", {"form": form})
 
 def search_posts(request):
     query = None
@@ -150,9 +137,46 @@ def profile(request):
         "posts": posts
     }
     return render(request, "blog/profile.html", context)
+
+def create_posts(request):
+    if request.method == "POST":
+        form = CreatPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            Image.objects.create(image_file=form.cleaned_data['image1'], post=post)
+            Image.objects.create(image_file=form.cleaned_data['image2'], post=post)
+            return redirect("blog:post-list")
+    else:
+        form = CreatPostForm()
+    return render(request, "forms/createpost.html", {"form": form})
+
+
 def post_delete(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == "POST":
         post.delete()
         return redirect('blog:profile')
     return render(request, "forms/delete-post.html", {"post": post})
+
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == "POST":
+        form = CreatPostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            Image.objects.create(image_file=form.cleaned_data['image1'], post=post)
+            Image.objects.create(image_file=form.cleaned_data['image2'], post=post)
+            return redirect("blog:profile")
+    else:
+        form = CreatPostForm(instance=post)
+        return render(request, "forms/createpost.html", {"form": form, "post": post})
+
+def delete_image(request, img_id):
+    img = get_object_or_404(Image, id=img_id)
+    img.delete()
+    return redirect("blog:profile")
+
