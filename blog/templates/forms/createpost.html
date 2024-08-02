@@ -7,7 +7,7 @@
         پست شما ثبت شده.
         <a href="{{ post.get_absolute_url }}">رفتن به پست</a>
     {% else %}
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 {#    model 1 #}
 {#        {% for field in form %}#}
@@ -16,6 +16,21 @@
 {#            {{ field.error }}#}
 {#        {% endfor %}#}
 {#    model  2  (as_p, as_ul, as_ol) #}
+{#        عنوان :#}
+{#        <input type="text" name="title" required>#}
+{#        <br>#}
+{#        توضیحات :#}
+{#       <textarea name="description"></textarea>#}
+{#        <br>#}
+{#        زمان مطالعه :#}
+{#        <input type="number" name="reading_time" required>#}
+{#        <br>#}
+{#        تصویر اول :#}
+{#        <input type="file" name="image1" >#}
+{#        <br>#}
+{#        تصویر دوم :#}
+{#        <input type="file" name="image2" >#}
+{#        <br>#}
         {{ form.as_p }}
         <input value="ثبت پست" type="submit">
     </form>

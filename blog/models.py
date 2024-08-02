@@ -1,10 +1,12 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django_jalali.db import models as jmodels
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django_resized import ResizedImageField
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 class PublishManager(models.Manager):
@@ -48,6 +50,15 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse("blog:post-detail", args=[self.id])
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        for img in self.images.all():
+            storage, path = img.image_file.storage, img.image_file.path
+            storage.delete(path)
+        super().delete(*args, **kwargs)
 
 class Ticket(models.Model):
     massage = models.TextField(verbose_name="توضیحات")

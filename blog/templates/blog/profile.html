@@ -11,11 +11,13 @@
            <th>حذف</th>
         </tr>
 
-    {% for post in posts %}<tr>
+    {% for post in posts %}
+        <tr>
         <td>{{ forloop.counter }}</td>
          <td><a href="{{ post.get_absolute_url }}">{{ post.title }}</a> </td>
         <td><a href="#">ویرایش</a> </td>
-        <td><a href="#">حذف</a></td>   </tr>
+        <td><a href="{% url 'blog:post-delete' post.id %}">حذف</a></td>
+        </tr>
     {% endfor %}
 
     </table>

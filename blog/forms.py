@@ -44,6 +44,8 @@ class CommentForm(forms.ModelForm):
 
 
 class CreatPostForm(forms.ModelForm):
+    image1 = forms.ImageField(label="تصویر اول")
+    image2 = forms.ImageField(label="تصویر دوم")
     def clean_title(self):
         title = self.cleaned_data["title"]
         if title:

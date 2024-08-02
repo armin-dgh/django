@@ -90,10 +90,13 @@ def post_comment(request, id):
 
 def create_posts(request):
     if request.method == "POST":
-        form = CreatPostForm(request.POST)
+        form = CreatPostForm(request.POST, request.FILES)
         if form.is_valid():
-            cd = form.cleaned_data
-            Post.objects.create(author_id=request.user.id, title=cd['title'], description=cd['description'], reading_time=cd['reading_time'])
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            Image.objects.create(image_file=form.cleaned_data['image1'], post=post)
+            Image.objects.create(image_file=form.cleaned_data['image2'], post=post)
             return redirect("blog:post-list")
     else:
         form = CreatPostForm()
@@ -142,10 +145,14 @@ def search_posts(request):
 
 def profile(request):
     user = request.user
-    print(user)
     posts = Post.published.filter(author=user)
-    print(posts)
     context = {
         "posts": posts
     }
     return render(request, "blog/profile.html", context)
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == "POST":
+        post.delete()
+        return redirect('blog:profile')
+    return render(request, "forms/delete-post.html", {"post": post})
