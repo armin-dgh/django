@@ -8,6 +8,8 @@ from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery, TrigramSimilarity
 from django.views.decorators.http import require_POST
 from itertools import chain
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -130,6 +132,9 @@ def search_posts(request):
     }
     return render(request,  'forms/searchform.html', context)
 
+
+
+@login_required
 def profile(request):
     user = request.user
     posts = Post.published.filter(author=user)
@@ -138,6 +143,8 @@ def profile(request):
     }
     return render(request, "blog/profile.html", context)
 
+
+@login_required
 def create_posts(request):
     if request.method == "POST":
         form = CreatPostForm(request.POST, request.FILES)
@@ -153,6 +160,7 @@ def create_posts(request):
     return render(request, "forms/createpost.html", {"form": form})
 
 
+
 def post_delete(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == "POST":
@@ -160,6 +168,8 @@ def post_delete(request, post_id):
         return redirect('blog:profile')
     return render(request, "forms/delete-post.html", {"post": post})
 
+
+@login_required
 def edit_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == "POST":
@@ -175,8 +185,34 @@ def edit_post(request, post_id):
         form = CreatPostForm(instance=post)
         return render(request, "forms/createpost.html", {"form": form, "post": post})
 
+
+@login_required
 def delete_image(request, img_id):
     img = get_object_or_404(Image, id=img_id)
     img.delete()
     return redirect("blog:profile")
 
+# def login_user(request):
+#     if request.method == "POST":
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             cd = form.cleaned_data
+#             user = authenticate(username=cd["username"], password=cd["password"])
+#             if user is not None:
+#                 if user.is_active:
+#                     login(request, user)
+#                     return redirect("blog:profile")
+#                 else:
+#                     return HttpResponse("your account is disable")
+#             else:
+#                 return HttpResponse("you are not login ")
+#     else:
+#         form = LoginForm()
+#         print(dir(request.user))
+#     return render(request, "registration/login.html", {"form": form})
+
+
+def logout_user(request):
+    logout(request)
+    return redirect("blog:post-list")
+    # return redirect(request.META.get("HTTP_REFERER")) #bargasht be safehe ghabli

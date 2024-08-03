@@ -6,13 +6,13 @@
     <form method="post">
         {% csrf_token %}
 {#    model 1 #}
-        {% for field in form %}
-            {{ field.name }}
-            {{ field }}
-            {{ field.error }}
-        {% endfor %}
+{#        {% for field in form %}#}
+{#            {{ field.name }}#}
+{#            {{ field }}#}
+{#            {{ field.error }}#}
+{#        {% endfor %}#}
 {#    model  2  (as_p, as_ul, as_ol) #}
-{#        {{ form.as_p }}#}
+        {{ form.as_p }}
         <input value="Save" type="submit">
     </form>
  {% endblock %}

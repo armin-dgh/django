@@ -1,12 +1,16 @@
  {% extends "parent/base.html" %}
-{% block title %}create post
-{% endblock %}
+
+        {% block title %}
+            {% if post %}
+            editpost
+            {% else %}create post
+            {% endif %}
+        {% endblock %}
+
+
+
 {% block content %}
-    <h1>create post</h1>
-    {% if post %}
-        پست شما ثبت شده.
-        <a href="{{ post.get_absolute_url }}">رفتن به پست</a>
-    {% else %}
+
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 {#    model 1 #}
@@ -32,7 +36,14 @@
 {#        <input type="file" name="image2" >#}
 {#        <br>#}
         {{ form.as_p }}
+        {% if post %}
+            {% for img in post.images.all %}
+                    <img width="300px" height="300px" src="{{ img.image_file.url }}" alt="{{ img.title }}">
+                <a href="{% url 'blog:delete-image' img.id%}">حذف عکس</a>
+            {% endfor %}
+        {% endif %}
+    <br><br>
         <input value="ثبت پست" type="submit">
     </form>
-    {% endif %}
+
  {% endblock %}

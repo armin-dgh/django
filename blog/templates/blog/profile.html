@@ -2,6 +2,7 @@
 {% block title %}profile
 {% endblock %}
 {% block content %}
+    <a href="{% url 'blog:logout' %}">خروج</a>
     <h2>profile</h2>
     <table style="width: 90%; border: 2px solid black; text-align: right; direction: rtl; ">
         <tr>
@@ -15,7 +16,7 @@
         <tr>
         <td>{{ forloop.counter }}</td>
          <td><a href="{{ post.get_absolute_url }}">{{ post.title }}</a> </td>
-        <td><a href="#">ویرایش</a> </td>
+        <td><a href="{% url 'blog:edit-post' post.id %}">ویرایش</a> </td>
         <td><a href="{% url 'blog:post-delete' post.id %}">حذف</a></td>
         </tr>
     {% endfor %}
