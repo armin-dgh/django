@@ -1,0 +1,13 @@
+  {% extends "parent/base.html" %}
+{% block title %}edit account
+{% endblock %}
+{% block content %}
+    <h1>به بخش ویرایش اطلاعات خوش امدید{{ request.user }}عزیز</h1>
+    <p>لطفا اطلاعات خود را تکمیل کنید</p>
+      <form method="post", enctype="multipart/form-data">
+    {% csrf_token %}
+         {{ user_form.as_p }}
+          {{ account_form.as_p }}
+     <input value="ذخیره" type="submit">
+    </form>
+ {% endblock %}

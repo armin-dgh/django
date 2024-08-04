@@ -51,3 +51,8 @@ class CommentAdmin(admin.ModelAdmin):
 @admin.register(Image)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["post", "title", "create"]
+
+
+@admin.register(Account)
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ["user", 'date_of_birth', "bio", "photo", "job"]

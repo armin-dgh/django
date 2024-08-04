@@ -88,3 +88,14 @@ class RegisterForm(forms.ModelForm):
         if cd["password2"] != cd["password"]:
             raise forms.ValidationError("پسورد ها مطابقت ندارند.")
         return cd["password2"]
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "email"]
+
+
+class AccountEditForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ["date_of_birth", "bio", "job", "photo"]

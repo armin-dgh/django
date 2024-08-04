@@ -224,7 +224,30 @@ def register(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data["password"])
             user.save()
+            Account.objects.create(user=user)
             return render(request, "registration/register_done.html", {"user": user})
     else:
         form = RegisterForm()
     return render(request, "registration/register.html", {"form": form})
+
+
+@login_required
+def edit_user(request):
+    if request.method == "POST":
+        user_form = UserEditForm(request.POST, instance=request.user)
+        account_form = AccountEditForm(request.POST, instance=request.user.account, files=request.FILES)
+        if user_form.is_valid() and account_form.is_valid():
+            account_form.save()
+            user_form.save()
+            return redirect("blog:profile")
+    else:
+        user_form = UserEditForm(instance=request.user)
+        account_form = AccountEditForm(instance=request.user.account)
+    context = {
+        "user_form": user_form,
+        "account_form": account_form
+    }
+
+    return render(request, "registration/edit_account.html", context)
+
+

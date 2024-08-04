@@ -97,7 +97,7 @@ class Comment(models.Model):
 class Image(models.Model):
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="images")
-    image_file = ResizedImageField(upload_to="armin", size=[500, 500], quality=70)
+    image_file = ResizedImageField(upload_to="armin", size=[500, 500], quality=70, crop=['middle', 'center'])
     title = models.CharField(max_length=250, verbose_name="عنوان", null=True, blank=True)
     description = models.TextField(verbose_name="توضیحات", null=True, blank=True)
     create = jmodels.jDateTimeField(auto_now_add=True)
@@ -114,6 +114,26 @@ class Image(models.Model):
     def __str__(self):
         import os
         self.title = os.path.basename(f"{self.image_file}")
-        print(os.path.basename(f"{self.image_file}"))
-        print(self.title)
         return os.path.basename(f"{self.image_file}")
+
+
+
+class Account(models.Model):
+    user = models.OneToOneField(User, related_name="account", on_delete=models.CASCADE)
+    date_of_birth = jmodels.jDateField(verbose_name="تاریخ تولد", blank=True, null=True)
+    bio = models.TextField(verbose_name="بایو", null=True, blank=True)
+    photo = ResizedImageField(upload_to="account_images/", size=[500, 500], quality=60, crop=['middle', 'center'], blank=True, null=True)
+    job = models.CharField(verbose_name="شغل", null=True, blank=True)
+
+
+    def __str__(self):
+        return self.user.username
+    class Meta:
+        verbose_name = "اکانت"
+        verbose_name_plural = "اکانت ها"
+
+    def delete(self, *args, **kwargs):
+        storage, path = self.photo.storage, self.photo.path
+        storage.delete(path)
+        super().delete(*args, **kwargs)
+
