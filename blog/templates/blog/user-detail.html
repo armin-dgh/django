@@ -1,0 +1,26 @@
+{% extends "parent/base.html" %}
+{% block title %}user-detail
+{% endblock %}
+{% block content %}
+    <h1>{{ user }}</h1>
+    <h2>اطلاعات شخصی</h2>
+     {% if user.account.photo %}
+    <div class="wrapper">
+    <img class="image--cover"  src="{{ user.account.photo.url }}" alt="بدون پروفایل">
+    </div>
+    {% endif %}
+    <p>{{ user.first_name }} {{ user.last_name }}</p>
+<p>{{ user.account.date_of_birth }}  تاریخ تولد</p>
+<p>{{ user.account.job }}  شغل</p>
+    bio:
+    <p>{{ user.account.bio }}</p>
+
+
+<h2>پست ها</h2>
+    {% for post in posts %}
+        <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+        <img src="{{ post.images.first.image_file.url }}" alt="{{ post.images.first.title }}">
+         <p>{{ post.description  }}</p>
+     {% endfor %}
+
+{% endblock %}

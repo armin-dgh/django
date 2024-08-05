@@ -24,6 +24,7 @@
         <img src="{{ post.images.first.image_file.url }}" alt="{{ post.images.first.title }}">
 {#        <h2><a href="{% url 'blog:post-detail' post.id %}">{{ post.title }}</a></h2>#}
         <p>{{ post.description | truncatewords:40 }}</p>
+        <a href="{% url 'blog:user-detail' post.author  %}">{{ post.author }}</a>
     {% endfor %}
 {#    {% include "partials/pageinator.html" with page=page_obj%}#}
 {#    {% with page=posts %}#}
@@ -35,5 +36,6 @@
 {#    <a href="?page={{ page.next_page_number }}">Next</a>#}
 {#{% endif %}#}
 {#    {% endwith %}#}
+    <br><br><br><br>
     {% include "partials/pageinator.html" with page=posts%}
 {% endblock %}

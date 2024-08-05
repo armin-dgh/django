@@ -9,7 +9,7 @@ urlpatterns = [
     # path('posts/', views.PostList.as_view(), name="post-list"),
     path("posts/", views.post_list, name="post-list"),
     path("posts/<str:category>", views.post_list, name="post-list-category"),
-    path('posts/<int:id>', views.post_details, name="post-detail"),
+    path('posts-detail/<int:id>', views.post_details, name="post-detail"),
     path('posts/<int:id>/comment/', views.post_comment, name='post-comment'),
     path('ticket/', views.ticket, name="ticket"),
     path('createpost/', views.create_posts, name="create-post"),
@@ -18,7 +18,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('post-delete/<post_id>', views.post_delete, name="post-delete"),
     path('image-delete/<img_id>', views.delete_image, name="delete-image"),
-    path("login/", auth_views.LoginView.as_view(), name="login"),
+    path("login/", views.LoginViews.as_view(), name="login"),
     path('logout/', views.logout_user, name="logout"),
     path('passwoed-change/', auth_views.PasswordChangeView.as_view(success_url='done'), name="password_change"),
     path('passwoed-change/done/', auth_views.PasswordChangeDoneView.as_view(), name="password_change_done"),
@@ -27,7 +27,8 @@ urlpatterns = [
     path('password-reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(success_url='/blog/password-reset/complete'), name="password_confirm"),
     path('password-reset/complete', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path('register/', views.register, name="register"),
-    path("edit-user/", views.edit_user, name="edit-user")
+    path("edit-user/", views.edit_user, name="edit-user"),
+    path("user-detail/<str:author>", views.user_detail, name="user-detail"),
 
 
 ]

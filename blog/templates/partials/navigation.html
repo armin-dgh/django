@@ -1,4 +1,5 @@
 {#<p>navigation</p>#}
+<center>
 <a href="{% url 'blog:create-post' %}">Creat Post</a>
 <a href="{% url 'blog:post-list' %}">Post list</a>
 <a href="{% url 'blog:profile' %}">Profile</a>
@@ -7,4 +8,4 @@
     <a href="{% url 'blog:profile' %}">{{ request.user.first_name | default:request.user.username }}</a>
     {% else %}
     <a href="{% url 'blog:login' %}">ورود</a>
-{% endif %}
+{% endif %}</center>

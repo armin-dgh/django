@@ -24,5 +24,12 @@
     {% endfor %}
 
     </table>
+    <br>
+    {% include "partials/pageinator.html" with page=posts%}
+<br><br>
+    {% for  cm in comments %}
+        {{ cm }}
+        <br>
+    {% endfor %}
 
 {% endblock %}

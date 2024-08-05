@@ -99,3 +99,5 @@ class AccountEditForm(forms.ModelForm):
     class Meta:
         model = Account
         fields = ["date_of_birth", "bio", "job", "photo"]
+
+

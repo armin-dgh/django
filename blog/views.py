@@ -10,6 +10,7 @@ from django.views.decorators.http import require_POST
 from itertools import chain
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
 
 # Create your views here.
 
@@ -55,7 +56,7 @@ def post_details(request, id):
     context = {
         "post": post,
         "form": form,
-        "comments":comments
+        "comments": comments
     }
     return render(request, "blog/details.html", context)
 # class DetailPost(DetailView):
@@ -69,8 +70,8 @@ def ticket(request):
         if form.is_valid():
             ticket_obj = Ticket.objects.create()
             cd = form.cleaned_data
-            Ticket.objects.create(massage = cd['massage'], name = cd['name'],
-                                  email = cd['email'], phone = cd['phone'],subject = cd['subject'])
+            Ticket.objects.create(massage=cd['massage'], name = cd['name'],
+                                  email=cd['email'], phone = cd['phone'],subject = cd['subject'])
             return redirect("blog:index")
     else:
         form = TicketForm()
@@ -142,8 +143,13 @@ def search_posts(request):
 def profile(request):
     user = request.user
     posts = Post.published.filter(author=user)
+    comments = Comment.objects.filter(post=posts[1])
+    paginator = Paginator(posts, "2")
+    page_number = request.GET.get("page", 1)
+    posts = paginator.page(page_number)
     context = {
-        "posts": posts
+        "posts": posts,
+        "comments": comments
     }
     return render(request, "blog/profile.html", context)
 
@@ -253,5 +259,26 @@ def edit_user(request):
     }
 
     return render(request, "registration/edit_account.html", context)
+
+
+def user_detail(request, author):
+    user = User.objects.get(username=author)
+    posts = Post.published.filter(author=user)
+    print(posts,user)
+    context = {
+        "user": user,
+        "posts": posts
+    }
+    return render(request, "blog/user-detail.html", context)
+
+
+class LoginViews(LoginView):
+    next_page = "/blog"
+    template_name = "registration/login.html"
+
+
+
+
+
 
 

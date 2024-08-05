@@ -147,3 +147,5 @@ class Account(models.Model):
         storage.delete(path)
         super().delete(*args, **kwargs)
 
+
+
