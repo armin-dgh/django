@@ -19,6 +19,15 @@ class Post(models.Model):
         DRAFT = 'DF', 'Draft'
         PUBLISHED = 'PB', 'Published'
         REJECTED = 'RJ', 'Rejected'
+
+    CATEGORY_CHOICES= (
+        ("تکنولوژی","تکنولوژی"),
+        ("هوش مصنوعی", "هوش مصنوعی"),
+        ("برنامه نویسی", "برنامه نویسی"),
+        ("بلاکچین", "بلاکچین"),
+        ("سایر", "سایر"),
+
+    )
     # relations
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_posts', verbose_name="نویسنده")
     # data fields
@@ -34,6 +43,7 @@ class Post(models.Model):
     status = models.CharField(max_length=2,
                               choices=Status.choices,
                               default=Status.PUBLISHED,verbose_name="وضعیت")
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="سایر")
     objects = models.Manager()
     published = PublishManager()
     class Meta:

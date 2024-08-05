@@ -2,12 +2,38 @@
 {% block title %}posts
 {% endblock %}
 {% block content %}
+    <br><br><br>
+    <details  style=" resize: inherit" open >
+    <summary>category</summary>
+        <a href="{% url 'blog:post-list-category' category="تکنولوژی" %}">تکنولوژی</a>
+        <a href="{% url 'blog:post-list-category' category="هوش مصنوعی" %}">هوش مصنوعی</a>
+        <a href="{% url 'blog:post-list-category' category="برنامه نویسی" %}">برنامه نویسی</a>
+        <a href="{% url 'blog:post-list-category' category="بلاکچین" %}">بلاکچین</a>
+        <a href="{% url 'blog:post-list-category' category="سایر" %}">سایر</a>
+        <a href="{% url 'blog:post-list' %}">همه</a>
+
+
+
+	</details>
+<br>
+
+
     <h1>post list</h1>
 	{% for post in posts %}
         <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
         <img src="{{ post.images.first.image_file.url }}" alt="{{ post.images.first.title }}">
 {#        <h2><a href="{% url 'blog:post-detail' post.id %}">{{ post.title }}</a></h2>#}
-        <p>{{ post.description | truncatewords:7 }}</p>
+        <p>{{ post.description | truncatewords:40 }}</p>
     {% endfor %}
-    {% include "partials/pageinator.html" with page=page_obj%}
+{#    {% include "partials/pageinator.html" with page=page_obj%}#}
+{#    {% with page=posts %}#}
+{#    {% if page.has_previous  %}#}
+{#    <a href="?page={{ page.previous_page_number }}">Previous</a>#}
+{#{% endif %}#}
+{#Page {{ page.number }} of {{ page.paginator.num_pages }}#}
+{#{% if page.has_next %}#}
+{#    <a href="?page={{ page.next_page_number }}">Next</a>#}
+{#{% endif %}#}
+{#    {% endwith %}#}
+    {% include "partials/pageinator.html" with page=posts%}
 {% endblock %}
